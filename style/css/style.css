@@ -1,0 +1,81 @@
+body {
+  background: #006600;
+  background: -moz-linear-gradient(top, #006600 0%, white 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #006600), color-stop(100%, white));
+  background: -webkit-linear-gradient(top, #006600 0%, white 100%);
+  background: -o-linear-gradient(top, #006600 0%, white 100%);
+  background: -ms-linear-gradient(top, #006600 0%, white 100%);
+  background: linear-gradient(to bottom, #006600 0%, white 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#006600', endColorstr='#ffffff',GradientType=0 ); }
+
+.loginform {
+  width: 600px;
+  height: 170px;
+  margin: 20px auto 0px;
+  border: 5px solid #eeeeee;
+  border-radius: 5px;
+  box-shadow: 0 0 10px white; }
+  .loginform .login-fields {
+    margin-bottom: 10px; }
+  .loginform .login-button {
+    margin: 0 10px; }
+
+.x-layout-card-item {
+  background: inherit !important; }
+
+.x-scroll-view {
+  overflow: inherit !important; }
+
+.candidates-toolbar {
+  background-image: none !important;
+  background-color: inherit !important; }
+
+.candidates-view {
+  background: inherit !important;
+  text-align: center;
+  margin-top: 30px; }
+  .candidates-view .candidates-wrapper {
+    width: 120px;
+    height: 180px;
+    background: white;
+    box-shadow: 0 0 15px white;
+    margin: 10px;
+    float: left; }
+    .candidates-view .candidates-wrapper .candidates-image {
+      margin-top: 10px; }
+      .candidates-view .candidates-wrapper .candidates-image img {
+        width: 90px;
+        height: 90px;
+        text-align: center; }
+    .candidates-view .candidates-wrapper .candidates-name {
+      margin: 10px;
+      white-space: normal;
+      overflow: hidden; }
+
+.candidates-details-wrapper .candidates-details-name-wrapper {
+  background: #757575;
+  background: -moz-linear-gradient(left, #757575 0%, #a8a8a8 34%, #ededed 71%, white 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #757575), color-stop(34%, #a8a8a8), color-stop(71%, #ededed), color-stop(100%, white));
+  background: -webkit-linear-gradient(left, #757575 0%, #a8a8a8 34%, #ededed 71%, white 100%);
+  background: -o-linear-gradient(left, #757575 0%, #a8a8a8 34%, #ededed 71%, white 100%);
+  background: -ms-linear-gradient(left, #757575 0%, #a8a8a8 34%, #ededed 71%, white 100%);
+  background: linear-gradient(to right, #757575 0%, #a8a8a8 34%, #ededed 71%, white 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#757575', endColorstr='#ffffff',GradientType=1 );
+  color: white;
+  padding: 10px;
+  border-bottom: 1px solid black; }
+  .candidates-details-wrapper .candidates-details-name-wrapper .candidates-details-name {
+    float: right;
+    font-family: Arial;
+    font-size: 20px;
+    font-weight: bold;
+    color: #248f24; }
+  .candidates-details-wrapper .candidates-details-name-wrapper .candidates-details-number {
+    display: inline-block;
+    font-family: Arial;
+    font-size: 14px; }
+.candidates-details-wrapper .candidates-details-info-wrapper {
+  padding: 10px;
+  float: right; }
+  .candidates-details-wrapper .candidates-details-info-wrapper div {
+    text-align: right; }

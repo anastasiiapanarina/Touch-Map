@@ -1,0 +1,128 @@
+$grey: #D8D8D8 
+$green: #248F24
+
+$p1: 10px
+
+=candidate-number
+	display: inline-block
+	font:
+		family: Arial
+		size: 14px
+
+=candidate-name 
+	float: right
+	font:
+		family: Arial
+		size: 20px
+		weight: bold
+	color: $green
+	
+
+
+
+
+=gradient-gray
+	background: rgb(117,117,117) /* Old browsers */
+	background: -moz-linear-gradient(left,  rgba(117,117,117,1) 0%, rgba(168,168,168,1) 34%, rgba(237,237,237,1) 71%, rgba(255,255,255,1) 100%) /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(117,117,117,1)), color-stop(34%,rgba(168,168,168,1)), color-stop(71%,rgba(237,237,237,1)), color-stop(100%,rgba(255,255,255,1))) /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  rgba(117,117,117,1) 0%,rgba(168,168,168,1) 34%,rgba(237,237,237,1) 71%,rgba(255,255,255,1) 100%) /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  rgba(117,117,117,1) 0%,rgba(168,168,168,1) 34%,rgba(237,237,237,1) 71%,rgba(255,255,255,1) 100%) /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  rgba(117,117,117,1) 0%,rgba(168,168,168,1) 34%,rgba(237,237,237,1) 71%,rgba(255,255,255,1) 100%) /* IE10+ */
+	background: linear-gradient(to right,  rgba(117,117,117,1) 0%,rgba(168,168,168,1) 34%,rgba(237,237,237,1) 71%,rgba(255,255,255,1) 100%) /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#757575', endColorstr='#ffffff',GradientType=1 ) /* IE6-9 */
+
+
+body
+	//background: #006600
+	
+	background: rgb(0,102,0) /* Old browsers */
+	background: -moz-linear-gradient(top, rgba(0,102,0,1) 0%, rgba(255,255,255,1) 100%) /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,102,0,1)), color-stop(100%,rgba(255,255,255,1)))/* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(0,102,0,1) 0%,rgba(255,255,255,1) 100%) /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(0,102,0,1) 0%,rgba(255,255,255,1) 100%) /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(0,102,0,1) 0%,rgba(255,255,255,1) 100%) /* IE10+ */
+	background: linear-gradient(to bottom, rgba(0,102,0,1) 0%,rgba(255,255,255,1) 100%) /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#006600', endColorstr='#ffffff',GradientType=0 ) /* IE6-9 */	
+
+.offer-button
+	//width: 100%
+
+
+
+
+
+.loginform 
+	width: 600px
+	height: 170px
+	margin: 20px auto 0px
+	border: 5px solid #eeeeee
+	border-radius: 5px
+	box-shadow: 0 0 10px #ffffff
+
+	.login-fields
+		margin-bottom: 10px
+
+	.login-button
+		margin: 0 10px
+
+.x-layout-card-item
+	background: inherit !important
+.x-scroll-view
+	overflow: inherit !important
+
+
+.candidates-toolbar
+	background-image: none !important
+	background-color: inherit !important
+		
+.candidates-view
+	background: inherit !important
+	text-align: center
+	margin-top: 30px
+
+	.candidates-wrapper
+		width: 120px
+		height: 180px
+		background: #ffffff
+		box-shadow: 0 0 15px #ffffff
+		margin: 10px
+		float: left
+
+		.candidates-image
+			margin-top: 10px
+			img
+				width: 90px
+				height: 90px
+				text-align: center
+
+		.candidates-name
+			margin: 10px
+			white-space: normal
+			overflow: hidden
+
+.candidates-details-wrapper
+	
+	.candidates-details-name-wrapper
+		+gradient-gray
+		color: white
+		padding: $p1
+		border-bottom: 1px solid black
+		
+		.candidates-details-name
+			+candidate-name
+
+		.candidates-details-number
+			+candidate-number
+
+	.candidates-details-info-wrapper
+		padding: $p1
+		float: right
+
+		div 
+			text-align: right
+
+
+
+
+	
+		
