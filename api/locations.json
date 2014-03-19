@@ -1,0 +1,41 @@
+{
+	"success": true,
+	"searchResults": [{	
+		"cityName": "Sydney",
+		"coords": {
+			"latitude": -33.8678500,
+			"longitude": 151.2073200	
+		}
+	}, {	
+		"cityName": "Moscow",
+		"coords": {
+			"latitude": 55.7522200,
+			"longitude": 37.6155600	
+		}
+	}, {	
+		"cityName": "Kyiv",
+		"coords": {
+			"latitude": 50.4546600,
+			"longitude": 30.5238000	
+		}
+	}, {	
+		"cityName": "London",
+		"coords": {
+			"latitude": 51.5085300,
+			"longitude": -0.1257400
+		}
+	}, {	
+		"cityName": "Washington",
+		"coords": {
+			"latitude": 38.8951100,
+			"longitude": -77.0363700	
+		}
+	}, {	
+		"cityName": "Shanghai",
+		"coords": {
+			"latitude": 31.2222200,
+			"longitude": 121.4580600
+		}
+	}]
+}
+

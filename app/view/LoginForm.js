@@ -1,9 +1,8 @@
-Ext.define('recruitingNP.login.form.LoginForm', {
+Ext.define('recruitingNP.view.LoginForm', {
 	extend: 'Ext.form.Panel',
+	alias: ['widget.loginform'],
 	cls: 'loginform',
-	requires: [
-		'recruitingNP.candidates.view.CandidatesView'
-	],
+
 	config: {
 		items: [
 			{
@@ -24,14 +23,10 @@ Ext.define('recruitingNP.login.form.LoginForm', {
 			},
 			{
 				xtype: 'button',
-				id: 'loginButton',
-				text: 'Sign in',
+				itemId: 'loginButton',
+				text: 'Log in',
 				cls: 'login-button',
-				ui: 'confirm',
-				// handler: function (button) {
-				// 	Ext.Viewport.remove(button.up(), true);
-				// 	Ext.Viewport.add(Ext.create('recruitingNP.candidates.view.MainCandidatesView'));
-				// }
+				ui: 'confirm'
 			}
 		]
 	}

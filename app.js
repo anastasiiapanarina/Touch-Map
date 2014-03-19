@@ -43,7 +43,7 @@ Ext.application({
 
         // Initialize the main view
         
-        Ext.Viewport.add(Ext.create('recruitingNP.login.form.LoginForm'));
+        Ext.Viewport.add(Ext.create('recruitingNP.view.MainNavigationView'));
         //Ext.Viewport.add(Ext.create('recruitingNP.offer.form.CandidateOfferForm'));
     },
 
