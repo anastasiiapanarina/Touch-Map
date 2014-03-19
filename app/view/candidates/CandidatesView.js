@@ -2,8 +2,7 @@ Ext.define('recruitingNP.view.candidates.CandidatesView', {
 	extend: 'Ext.dataview.DataView',
 	alias: ['widget.candidates'],
 	requires: [
-		'recruitingNP.store.CandidatesStore',
-		'recruitingNP.view.candidates.CandidatesDetailsView'
+		'recruitingNP.store.CandidatesStore'
 	],
 	config: {
 		

@@ -3,8 +3,7 @@ Ext.define('recruitingNP.view.offer.OfferView', {
 	alias: ['widget.offerview'],
 	requires: [
 		'recruitingNP.view.offer.CandidateInfoForm',
-		'recruitingNP.view.offer.OfferInfoForm',
-		'recruitingNP.model.CandidatesModel'
+		'recruitingNP.view.offer.OfferInfoForm'
 	],
 	initialize: function () {
 		var form = this.down('candidateinfo');

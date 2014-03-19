@@ -1,22 +1,12 @@
 Ext.define('recruitingNP.view.Map',{
 	extend: 'Ext.Map',
-	alias: ['widget.mapsss'],
+	alias: ['widget.mapview'],
 	requires: [
-		'recruitingNP.model.LocationsModel',
-		'recruitingNP.store.LocationsStore'
+		'recruitingNP.model.LocationsModel'
 	],
 	
 	config: {
 		title: 'Map',
-		// items: [
-		// 	{
-		// 		xtype: 'searchfield',
-		// 		placeHolder: 'Enter address',
-		// 		width: 500,
-		// 		margin: '5px 55px',
-		// 		id: 'search-place'
-		// 	}
-		// ],
 		mapOptions: {
 			zoom: 12,
 		}

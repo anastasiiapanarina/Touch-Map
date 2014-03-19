@@ -1,59 +1,55 @@
-Ext.define('recruitingNP.controller.NavigationController', {
+Ext.define('recruitingNP.controller.Controller', {
 	extend: 'Ext.app.Controller',
 	requires: [
-		'recruitingNP.view.LoginForm',
-		'recruitingNP.view.candidates.MainCandidatesView',
-		'recruitingNP.view.offer.OfferView'
+		'recruitingNP.view.candidates.CandidatesView',
+		'recruitingNP.view.candidates.CandidatesDetailsView',
+		'recruitingNP.view.offer.OfferView',
+		'recruitingNP.view.Map'
 	],
 	config: {
 		refs: {
 			navView: 'navview',
 			logoutButton: 'button#logoutButton',
-			mapView: 'mapsss'
+			mapView: 'mapview'
 		},
 		searchBox: null,
 		control: {
 			'navview': {
 				back: function (view) {
 					view.getActiveItem().isXType('loginform') ? this.getLogoutButton().hide() : this.getLogoutButton().show();
-					if (view.getActiveItem().isXType('offerview') && 
-						view.getActiveItem().getActiveItem().isXType('candidateinfo')) {
-						var candidateView = view.getActiveItem().getActiveItem(),
-							value = this.searchBox ? this.searchBox.getPlaces()[0].formatted_address : "";
-						candidateView.down('#search-address').setValue(value);
-					}
+					this.setAddressValue(view);
 					
 				},
 				initialize: function (view) {
 					this.getLogoutButton().hide();					
 				}
 			},
-			
 			'button#loginButton': {
 				tap: 'doLogin'
 			},
 			'button#logoutButton': {
 				tap: 'doLogout'
 			},
-			'button#showButton': {
-				tap: 'showMap'
-			},
 
 			'candidates': {
 				itemtap: 'showCandidateDetails'
 			},
+
 			'button#offerButton': {
 				tap: 'makeOffer'
 			},
 
-			'mapsss': {
+			'button#showButton': {
+				tap: 'showMap'
+			},
+
+			'mapview': {
 				maprender: 'renderMap'
 			},
 
-
 			'searchfield#search-address': {
 				focus: function () {
-					var input = Ext.query('#search-address input')[0];
+					var input = Ext.query('.search-address input')[0];
 					this.searchBox = new google.maps.places.SearchBox(input);
 				},
 				clearicontap: function () {
@@ -77,13 +73,22 @@ Ext.define('recruitingNP.controller.NavigationController', {
 					}
 				},
 				focus: function (searchfield) {
-					var input = Ext.query('#search-place input')[0];
+					var input = Ext.query('.search-place input')[0];
 					this.searchBox = new google.maps.places.SearchBox(input);
 				},
 				clearicontap: function () {
 					this.searchBox = null;
 				}
 			}
+		}
+	},
+
+	setAddressValue: function (view) {
+		if (view.getActiveItem().isXType('offerview') && 
+			view.getActiveItem().getActiveItem().isXType('candidateinfo')) {
+			var candidateView = view.getActiveItem().getActiveItem(),
+				value = this.searchBox ? this.searchBox.getPlaces()[0].formatted_address : "";
+			candidateView.down('#search-address').setValue(value);
 		}
 	},
 
@@ -100,9 +105,6 @@ Ext.define('recruitingNP.controller.NavigationController', {
 		});
 		
 		// if (name === "nata" && password === "nnnn") {
-
-		// 	// Ext.Viewport.remove(button.up(), true);
-		// 	// Ext.Viewport.add(Ext.create('recruitingNP.candidates.view.MainCandidatesView'));
 
 		// } else {
 		// 	Ext.Msg.alert('', 'Please, enter correct name and password!')
@@ -146,7 +148,6 @@ Ext.define('recruitingNP.controller.NavigationController', {
 
 
 	renderMap: function (mapView) {
-		debugger	
 		if(mapView.getRecord()) {
 			var latitude = mapView.getRecord().get('latitude'),
 				longitude = mapView.getRecord().get('longitude'),
@@ -167,10 +168,11 @@ Ext.define('recruitingNP.controller.NavigationController', {
 			mapView.setItems([
 				{
 					xtype: 'searchfield',
+					itemId: 'search-place',
+					cls: 'search-place',
 					placeHolder: 'Enter address',
 					width: 500,
-					margin: '5px 55px',
-					id: 'search-place'
+					margin: '5px 55px'
 				}
 			]);
 			if (this.searchBox) {
@@ -188,7 +190,6 @@ Ext.define('recruitingNP.controller.NavigationController', {
 		for (var i = 0, marker; marker = markers[i]; i++) {
 			marker.setMap(null);
 		}
-		// For each place, get the icon, place name, and location.
 		markers = [];
 		var bounds = new google.maps.LatLngBounds();
 		for (var i = 0, place; place = places[i]; i++) {
@@ -200,7 +201,6 @@ Ext.define('recruitingNP.controller.NavigationController', {
 				scaledSize: new google.maps.Size(25, 25)
 			};
 
-			// Create a marker for each place.
 			var marker = new google.maps.Marker({
 				map: map,
 				title: place.name,
@@ -218,4 +218,5 @@ Ext.define('recruitingNP.controller.NavigationController', {
 			searchBox.setBounds(bounds);
 		});
 	}
+
 });

@@ -1,8 +1,7 @@
 Ext.define('recruitingNP.view.candidates.CandidatesDetailsView', {
 	extend: 'Ext.Panel',
 	requires: [
-		'recruitingNP.store.CandidatesStore',
-		'recruitingNP.model.CandidatesModel',
+		'recruitingNP.model.CandidatesModel'
 	],
 
 	initialize: function () {

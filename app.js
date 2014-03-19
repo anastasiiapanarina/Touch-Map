@@ -17,7 +17,7 @@ Ext.application({
         'Ext.MessageBox'
     ],
 
-    controllers: ['NavigationController'],
+    controllers: ['Controller'],
 
     icon: {
         '57': 'resources/icons/Icon.png',
@@ -44,7 +44,6 @@ Ext.application({
         // Initialize the main view
         
         Ext.Viewport.add(Ext.create('recruitingNP.view.MainNavigationView'));
-        //Ext.Viewport.add(Ext.create('recruitingNP.offer.form.CandidateOfferForm'));
     },
 
     onUpdated: function() {

@@ -8,12 +8,12 @@ Ext.define('recruitingNP.view.offer.OfferInfoForm',{
 				xtype: 'fieldset',
 				items: [
 					{
-						xtype: 'numberfield',
-						label: 'Offered Salary:'
-					},
-					{
 						xtype: 'textfield',
 						label: 'Offer Title:'
+					},
+					{
+						xtype: 'numberfield',
+						label: 'Offered Salary:'
 					},
 					{
 						xtype: 'button',
@@ -37,8 +37,14 @@ Ext.define('recruitingNP.view.offer.OfferInfoForm',{
 						store: Ext.create('recruitingNP.store.LocationsStore')
 					},
 					{
-						xtype: 'textfield',
-						label: 'Start Date:'
+						xtype: 'datepickerfield',
+						label: 'Start Date:',
+						destroyPickerOnHide: true,
+						name: 'startDate',
+						value: new Date(),
+						picker: {
+							yearFrom: 2014
+						}
 					}
 				]
 			}

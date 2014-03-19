@@ -2,15 +2,9 @@ Ext.define('recruitingNP.view.offer.CandidateInfoForm', {
 	extend: 'Ext.form.Panel',
 	alias: ['widget.candidateinfo'],
 	requires: [
-		'recruitingNP.model.CandidatesModel',
-		'recruitingNP.store.CandidatesStore',
-		'recruitingNP.store.LocationsStore'
+		'recruitingNP.model.CandidatesModel'
 	],
 
-	initialize: function () {
-		console.log(this.getValues());
-		this.callParent(arguments);
-	},
 	config: {
 		itemId: 'candidateinfo',
 		items: [
@@ -32,11 +26,12 @@ Ext.define('recruitingNP.view.offer.CandidateInfoForm', {
 			},
 			{
 				xtype: 'searchfield',
-				id: 'search-address',
-                name: 'address',
-				itemId: 'addressField',
-				labelWidth: 300,
+				itemId: 'search-address',
+				cls: 'search-address',
 				label: 'Address',
+				labelWidth: 300,
+                name: 'address',
+				placeHolder: 'Enter address'
 			},
 			{
 				xtype: 'emailfield',
