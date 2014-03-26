@@ -19,6 +19,10 @@
         "sourceName": "Career Site",
 
         "applicantNumber": 22,
+        "addressCoords": {
+            "latitude": 43.789072,
+            "longitude": -79.53221300000001    
+        }
         
     }, {
         
@@ -34,8 +38,11 @@
 
         "resumeSource": "RESUME",
         "sourceName": "BMEYERS1",
- 
         "applicantNumber": 2,
+        "addressCoords": {
+            "latitude": 47.993626,
+            "longitude": 7.851922000000059    
+        }
     }, {
     
         "email": "sirajuddin.c@gmail.com",
@@ -52,7 +59,10 @@
         "sourceName": "Career Site",
 
         "applicantNumber": 20,
-
+        "addressCoords": {
+            "latitude": -33.8671500,
+            "longitude": 151.2073200    
+        }
 
     }, {
 
@@ -70,6 +80,10 @@
         "sourceName": "STHORATSABA@GMAIL.COM",
 
         "applicantNumber": 17,
+        "addressCoords": {
+            "latitude": -33.8656500,
+            "longitude": 152.2093200    
+        }
 
     }, {
 
@@ -86,7 +100,11 @@
         "resumeSource": "RESUME",
         "sourceName": "smali",
 
-         "applicantNumber": 13,
+        "applicantNumber": 13,
+        "addressCoords": {
+            "latitude": -33.8668500,
+            "longitude": 151.2573200    
+        }
 
     }, {
 
@@ -104,6 +122,10 @@
         "sourceName": "JCARR1",
 
         "applicantNumber": 6,
+        "addressCoords": {
+            "latitude": -34.8648500,
+            "longitude": 151.3093200    
+        }
 
     }, {
 
@@ -121,6 +143,10 @@
         "sourceName": "mmishra@saba.com",
 
         "applicantNumber": 11,
+        "addressCoords": {
+            "latitude": -30.8657500,
+            "longitude": 150.2073200    
+        }
 
     }, {
  
@@ -138,6 +164,10 @@
         "sourceName": "Career Site",
 
         "applicantNumber": 24,
+        "addressCoords": {
+            "latitude": -33.8688500,
+            "longitude": 151.2073200    
+        }
 
 
     }],

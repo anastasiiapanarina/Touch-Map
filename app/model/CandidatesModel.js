@@ -42,6 +42,18 @@ Ext.define('recruitingNP.model.CandidatesModel', {
             },
             {
             	name: 'applicantNumber'
+            },
+            {
+                name: 'addresslat',
+                convert: function (v, record) {
+                    return record.raw.addressCoords.latitude;
+                }
+            },
+            {
+                name: 'addresslong',
+                convert: function (v, record) {
+                    return record.raw.addressCoords.longitude;
+                }
             }
         ]
     }

@@ -14,7 +14,8 @@ Ext.application({
     name: 'recruitingNP',
 
     requires: [
-        'Ext.MessageBox'
+        'Ext.MessageBox',
+        'Ext.device.Device'
     ],
 
     controllers: ['Controller'],

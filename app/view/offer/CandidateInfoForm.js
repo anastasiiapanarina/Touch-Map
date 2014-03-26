@@ -6,22 +6,24 @@ Ext.define('recruitingNP.view.offer.CandidateInfoForm', {
 	],
 
 	config: {
-		itemId: 'candidateinfo',
+		cls: 'candidate-info',
 		items: [
 			{
 				xtype: 'textfield',
-				labelWidth: 300,
 				label: 'Name',
-				name: 'displayName'
+				name: 'displayName',
+				labelWidth: '30%',
+				width: '80%'
+
 			},
 			{
 				xtype: 'button',
 				text: 'Show map',
 				itemId: 'showButton',
-				width: '15%',
+				width: '18%',
 				style: {
 					float: 'right',
-					margin: '0 5px'
+					margin: '5px 1%'
 				}
 			},
 			{
@@ -29,14 +31,16 @@ Ext.define('recruitingNP.view.offer.CandidateInfoForm', {
 				itemId: 'search-address',
 				cls: 'search-address',
 				label: 'Address',
-				labelWidth: 300,
+				labelWidth: '30%',
+				width: '80%',
                 name: 'address',
 				placeHolder: 'Enter address'
 			},
 			{
 				xtype: 'emailfield',
 				label: 'Email',
-				labelWidth: 300,
+				labelWidth: '30%',
+				width: '80%',
 				name: 'email'
 			}		
 		]

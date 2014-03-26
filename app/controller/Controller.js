@@ -1,7 +1,7 @@
 Ext.define('recruitingNP.controller.Controller', {
 	extend: 'Ext.app.Controller',
 	requires: [
-		'recruitingNP.view.candidates.CandidatesView',
+		'recruitingNP.view.candidates.CandidatesTabPanel',
 		'recruitingNP.view.candidates.CandidatesDetailsView',
 		'recruitingNP.view.offer.OfferView',
 		'recruitingNP.view.Map'
@@ -10,29 +10,50 @@ Ext.define('recruitingNP.controller.Controller', {
 		refs: {
 			navView: 'navview',
 			logoutButton: 'button#logoutButton',
-			mapView: 'mapview'
+			mapView: 'mapview',
+			candMap: 'map#addressMap',
+			mapRadius: 'numberfield#mapRadius',
+			centerMapPoint: 'selectfield#centerMapPoint'
 		},
 		searchBox: null,
+		markers: [],
+		circle: null,
 		control: {
 			'navview': {
 				back: function (view) {
 					view.getActiveItem().isXType('loginform') ? this.getLogoutButton().hide() : this.getLogoutButton().show();
 					this.setAddressValue(view);
-					
 				},
 				initialize: function (view) {
 					this.getLogoutButton().hide();					
 				}
 			},
+
+			'candidates': {
+				itemtap: 'showCandidateDetails',
+			},
+
+			'candidatesdetails': {
+				hide: function () {
+					this.getNavView().getNavigationBar().getBackButton().enable();
+					this.getLogoutButton().enable();
+				}
+			},
+
+			'mapview': {
+				maprender: 'renderMap'
+			},
+
+			'map#addressMap': {
+				maprender: 'renderCandidatesPlaces',
+			},
+
 			'button#loginButton': {
 				tap: 'doLogin'
 			},
+			
 			'button#logoutButton': {
 				tap: 'doLogout'
-			},
-
-			'candidates': {
-				itemtap: 'showCandidateDetails'
 			},
 
 			'button#offerButton': {
@@ -43,10 +64,13 @@ Ext.define('recruitingNP.controller.Controller', {
 				tap: 'showMap'
 			},
 
-			'mapview': {
-				maprender: 'renderMap'
+			'selectfield#centerMapPoint': {
+				change: 'showNewCandidatesMarkers'
 			},
 
+			'numberfield#mapRadius': {
+				change: 'showNewCandidatesMarkers'
+			},
 			'searchfield#search-address': {
 				focus: function () {
 					var input = Ext.query('.search-address input')[0];
@@ -62,7 +86,6 @@ Ext.define('recruitingNP.controller.Controller', {
 						var value = this.searchBox.getPlaces()[0].formatted_address;
 						searchfield.setValue(value);
 					}
-
 				},
 				change: function (input) {
 					var me = this;
@@ -97,11 +120,13 @@ Ext.define('recruitingNP.controller.Controller', {
 			values = form.getValues(),
 			name = values.name,
 			password = values.password;
+		console.log('Device platform: ' + Ext.device.Device.platform);
+		console.log(Ext.os.deviceType);
 		this.getLogoutButton().show();	
 		this.getNavView().getNavigationBar().getBackButton().show();
 		this.getNavView().push({
-				title: 'Candidates',
-				xtype: 'candidates'
+			title: 'Candidates',
+			xtype: 'candidatestabpanel',
 		});
 		
 		// if (name === "nata" && password === "nnnn") {
@@ -117,7 +142,8 @@ Ext.define('recruitingNP.controller.Controller', {
 	},
 
 	showCandidateDetails: function (view, index, noda, record) {
-		
+		this.getNavView().getNavigationBar().getBackButton().disable();
+		this.getLogoutButton().disable();
 		this.getNavView().push(
 			Ext.create('recruitingNP.view.candidates.CandidatesDetailsView', {
 				record: record,
@@ -134,53 +160,141 @@ Ext.define('recruitingNP.controller.Controller', {
 	},
 
 	showMap: function (button) {
-		if (button.up().getItemId() === 'candidateinfo') {
+		if (button.up().isXType('candidateinfo')) {
 			this.getNavView().push(Ext.create('recruitingNP.view.Map',{
-				searchBox: this.searchBox
+				searchBox: this.searchBox,
 			}));
 		} else {
 			var	record = button.up().down('selectfield').getRecord();
 			this.getNavView().push(Ext.create('recruitingNP.view.Map',{
-				record: record
+				record: record,
 			}));		
 		}
 	},
 
-
 	renderMap: function (mapView) {
-		if(mapView.getRecord()) {
-			var latitude = mapView.getRecord().get('latitude'),
-				longitude = mapView.getRecord().get('longitude'),
-				latLng = new google.maps.LatLng(latitude, longitude);
-
-			var marker = new google.maps.Marker({
-				map: mapView.getMap(),
-				position: latLng
-			});
-			mapView.setMapCenter(latLng);
+		if (mapView.getItemId() === "addressMap") {
+			this.renderCandidatesPlaces();
 		} else {
-			var map = mapView.getMap();
-			var defaultBounds = new google.maps.LatLngBounds(
-				new google.maps.LatLng(-33.8902, 151.1759),
-				new google.maps.LatLng(-33.8474, 151.2631));
-			map.fitBounds(defaultBounds);
-			var me = this;
-			mapView.setItems([
-				{
-					xtype: 'searchfield',
-					itemId: 'search-place',
-					cls: 'search-place',
-					placeHolder: 'Enter address',
-					width: 500,
-					margin: '5px 55px'
-				}
-			]);
-			if (this.searchBox) {
-				me.showPlace(mapView.getMap());
-			}
+			mapView.getRecord() ? this.renderSelectedPlace(mapView) : this.renderSearchedPlace(mapView);
 		}
 	},
 	
+	showNewCandidatesMarkers: function () {
+		this.clearMarkers();
+		this.clearCircle();
+		this.renderCandidatesPlaces();
+	},
+
+	renderCandidatesPlaces: function () {
+		var store = Ext.data.StoreManager.lookup('candidatesStore'),
+			mapView = this.getMapView(),
+			candidates = store.getRange(),
+			map = mapView.getMap(),
+			radius = this.getMapRadius().getValue(),
+			center = this.getCenterMapPoint().getRecord(),
+			centerPoint,
+	     	bounds = new google.maps.LatLngBounds(),
+			markers = [],
+			circle,
+			circleOptions;
+	
+	    centerPoint = new google.maps.LatLng(center.get('latitude'), center.get('longitude'));
+     	bounds.extend(centerPoint);
+
+	    circleOptions = {
+	        center: centerPoint,
+	        fillColor: "#00AAFF",
+	        fillOpacity: 0.5,
+	        strokeColor: "#FFAA00",
+	        strokeOpacity: 0.8,
+	        strokeWeight: 2,
+	        clickable: false,
+	        radius: radius*1000
+	    }
+	 
+	    this.circle = new google.maps.Circle(circleOptions);
+	    this.circle.setMap(map);
+
+		for (var i = 0, place; place = candidates[i]; i++) {
+			var latLng = new google.maps.LatLng(place.get('addresslat'), place.get('addresslong'));
+			if (this.distHaversine(latLng, centerPoint) < radius) {
+				var marker = new google.maps.Marker({
+					map: map,
+					title: place.get('displayName'),
+					position: latLng,
+					clickable: true
+				});
+				markers.push(marker);
+				bounds.extend(latLng);
+			}
+		}
+		this.markers = markers;
+		radius ? map.fitBounds(this.circle.getBounds()) : mapView.setMapCenter(centerPoint);
+	},
+
+	rad: function (x) {
+		return x*Math.PI/180;
+	},
+
+	distHaversine: function (p1, p2) {
+	    var R = 6371; // earth's mean radius in km
+	    var dLat  = this.rad(p2.lat() - p1.lat());
+	    var dLong = this.rad(p2.lng() - p1.lng());
+	     
+	    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+	            Math.cos(this.rad(p1.lat())) * Math.cos(this.rad(p2.lat())) * Math.sin(dLong/2) * Math.sin(dLong/2);
+	    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+	    var d = R * c;
+	     
+	    return d.toFixed(3);
+	},
+
+	clearMarkers: function () {
+		if(this.markers.length !== 0) {
+			for (var i = 0, marker; marker = this.markers[i]; i++) {
+				marker.setMap(null);
+			}
+			this.markers = [];
+		}
+	},
+
+	clearCircle: function () {
+		this.circle.setMap(null);
+		this.circle = null;
+	},
+
+	renderSelectedPlace: function (mapView) {
+		var latitude = mapView.getRecord().get('latitude'),
+			longitude = mapView.getRecord().get('longitude'),
+			latLng = new google.maps.LatLng(latitude, longitude);
+
+		new google.maps.Marker({
+			map: mapView.getMap(),
+			position: latLng
+		});
+		mapView.setMapCenter(latLng);
+	},
+
+	renderSearchedPlace: function (mapView) {
+		var map = mapView.getMap();
+		var defaultBounds = new google.maps.LatLngBounds(
+			new google.maps.LatLng(-33.8902, 151.1759),
+			new google.maps.LatLng(-33.8474, 151.2631));
+		map.fitBounds(defaultBounds);
+		mapView.setItems([
+			{
+				xtype: 'searchfield',
+				itemId: 'search-place',
+				cls: 'search-place',
+				placeHolder: 'Enter address',
+			}
+		]);
+		if (this.searchBox) {
+			this.showPlace(mapView.getMap());
+		}
+	},
+
 
 	showPlace: function (map) {
 		var markers = [];
@@ -193,26 +307,18 @@ Ext.define('recruitingNP.controller.Controller', {
 		markers = [];
 		var bounds = new google.maps.LatLngBounds();
 		for (var i = 0, place; place = places[i]; i++) {
-			var image = {
-				url: place.icon,
-				size: new google.maps.Size(71, 71),
-				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(17, 34),
-				scaledSize: new google.maps.Size(25, 25)
-			};
-
 			var marker = new google.maps.Marker({
 				map: map,
 				title: place.name,
 				position: place.geometry.location
 			});
-
 			markers.push(marker);
-
 			bounds.extend(place.geometry.location);
 		}
+
 		map.fitBounds(bounds);
 		this.getMapView().setMapOptions({zoom: 12});
+
 		google.maps.event.addListener(map, 'bounds_changed', function() {
 			var bounds = map.getBounds();
 			searchBox.setBounds(bounds);

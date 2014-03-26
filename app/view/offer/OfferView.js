@@ -12,6 +12,7 @@ Ext.define('recruitingNP.view.offer.OfferView', {
 	},
 	
 	config: {
+		title: 'Offer details',
 		items: [
 			{
 				title: 'Candidate Information',

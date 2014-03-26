@@ -1,7 +1,7 @@
 .loginform {
-  width: 600px;
+  width: 90%;
   height: 170px;
-  margin: 20px auto 0px;
+  margin: 3% auto 0;
   border: 5px solid #eeeeee;
   border-radius: 5px;
   box-shadow: 0 0 10px white; }
@@ -65,3 +65,24 @@
   float: right; }
   .candidates-details-wrapper .candidates-details-info-wrapper div {
     text-align: right; }
+
+.candidate-info .search-address input {
+  margin-left: 1.5em !important;
+  width: 95% !important; }
+
+.search-place {
+  width: 30%;
+  min-height: 1.5em !important;
+  margin: 20px 75px 0;
+  font-size: 100%; }
+  .search-place input {
+    margin-left: 2em !important;
+    min-height: 1.5em !important;
+    font-size: 100%; }
+  .search-place .x-unsized.x-field-input {
+    background: white; }
+
+.offer-info .location.x-field {
+  border-bottom: none; }
+.offer-info .start-date {
+  border-top: 1px solid #dddddd; }

@@ -1,5 +1,6 @@
 Ext.define('recruitingNP.view.candidates.CandidatesDetailsView', {
 	extend: 'Ext.Panel',
+	alias:['widget.candidatesdetails'],
 	requires: [
 		'recruitingNP.model.CandidatesModel'
 	],
@@ -31,24 +32,19 @@ Ext.define('recruitingNP.view.candidates.CandidatesDetailsView', {
 	},
 
 	setHtmlTpl: function () {
-		var record = this.getRecord(),
-			displayName = record.get('displayName'),
-			email = record.get('email'),
-			email = email !== null ? email : '',
-			applicantNumber = record.get('applicantNumber'),
-			sourceName = record.get('sourceName'),
-			resumeSource = record.get('resumeSource');
-
-		return '<div class="candidates-details-wrapper">' +
-			'	<div class="candidates-details-name-wrapper">'+
-			'		<div class="candidates-details-name">' + displayName + '</div>' +
-			'		<div class="candidates-details-number">Candidate #' + applicantNumber + '</div>' +
-			'	</div>'+
-			'	<div class="candidates-details-info-wrapper">'+
-			'		<div class="candidates-details-email">' + email + '</div>' +
-			'		<div class="candidates-details-source">Via ' + sourceName + '</div>' +
-			'	</div>'+
-			'</div>';
+		var tpl = new Ext.Template(
+			'<div class="candidates-details-wrapper">',
+			'	<div class="candidates-details-name-wrapper">',
+			'		<div class="candidates-details-name">{displayName}</div>',
+			'		<div class="candidates-details-number">Candidate #{applicantNumber}</div>',
+			'	</div>',
+			'	<div class="candidates-details-info-wrapper">',
+			'		<div class="candidates-details-email">{email}</div>',
+			'		<div class="candidates-details-source">Via {sourceName}</div>' ,
+			'	</div>',
+			'</div>'
+		);
+		return tpl.append(this.element, this.getRecord().getData());
 	}
 
 });
