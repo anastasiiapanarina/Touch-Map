@@ -78,6 +78,7 @@ Ext.define('recruitingNP.controller.Controller', {
 				},
 				clearicontap: function () {
 					this.searchBox = null;
+					this.clearMarkers();
 				}
 			},
 			'searchfield#search-place': {
@@ -91,7 +92,7 @@ Ext.define('recruitingNP.controller.Controller', {
 					var me = this;
 					if(input.up() && input.getValue() !== "") {
 						google.maps.event.addListener(this.searchBox, 'places_changed', function() {
-							me.showPlace(me.getMapView().getMap());
+							me.showPlace(input.up().getMap());
 						});
 					}
 				},
@@ -101,6 +102,7 @@ Ext.define('recruitingNP.controller.Controller', {
 				},
 				clearicontap: function () {
 					this.searchBox = null;
+					this.clearMarkers();
 				}
 			}
 		}
@@ -201,7 +203,6 @@ Ext.define('recruitingNP.controller.Controller', {
 	
 	    centerPoint = new google.maps.LatLng(center.get('latitude'), center.get('longitude'));
      	bounds.extend(centerPoint);
-
 	    circleOptions = {
 	        center: centerPoint,
 	        fillColor: "#00AAFF",
@@ -218,7 +219,8 @@ Ext.define('recruitingNP.controller.Controller', {
 
 		for (var i = 0, place; place = candidates[i]; i++) {
 			var latLng = new google.maps.LatLng(place.get('addresslat'), place.get('addresslong'));
-			if (this.distHaversine(latLng, centerPoint) < radius) {
+			var dist = google.maps.geometry.spherical.computeDistanceBetween (centerPoint, latLng);
+			if (dist/1000 < radius) {
 				var marker = new google.maps.Marker({
 					map: map,
 					title: place.get('displayName'),
@@ -229,25 +231,10 @@ Ext.define('recruitingNP.controller.Controller', {
 				bounds.extend(latLng);
 			}
 		}
+
+
 		this.markers = markers;
 		radius ? map.fitBounds(this.circle.getBounds()) : mapView.setMapCenter(centerPoint);
-	},
-
-	rad: function (x) {
-		return x*Math.PI/180;
-	},
-
-	distHaversine: function (p1, p2) {
-	    var R = 6371; // earth's mean radius in km
-	    var dLat  = this.rad(p2.lat() - p1.lat());
-	    var dLong = this.rad(p2.lng() - p1.lng());
-	     
-	    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-	            Math.cos(this.rad(p1.lat())) * Math.cos(this.rad(p2.lat())) * Math.sin(dLong/2) * Math.sin(dLong/2);
-	    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-	    var d = R * c;
-	     
-	    return d.toFixed(3);
 	},
 
 	clearMarkers: function () {
@@ -277,8 +264,8 @@ Ext.define('recruitingNP.controller.Controller', {
 	},
 
 	renderSearchedPlace: function (mapView) {
-		var map = mapView.getMap();
-		var defaultBounds = new google.maps.LatLngBounds(
+		var map = mapView.getMap(),
+			defaultBounds = new google.maps.LatLngBounds(
 			new google.maps.LatLng(-33.8902, 151.1759),
 			new google.maps.LatLng(-33.8474, 151.2631));
 		map.fitBounds(defaultBounds);
@@ -297,15 +284,11 @@ Ext.define('recruitingNP.controller.Controller', {
 
 
 	showPlace: function (map) {
-		var markers = [];
-		var searchBox = this.searchBox;
+		var markers = [],
+			searchBox = this.searchBox,
+			places = searchBox.getPlaces(),
+			bounds = new google.maps.LatLngBounds();
 
-		var places = searchBox.getPlaces();
-		for (var i = 0, marker; marker = markers[i]; i++) {
-			marker.setMap(null);
-		}
-		markers = [];
-		var bounds = new google.maps.LatLngBounds();
 		for (var i = 0, place; place = places[i]; i++) {
 			var marker = new google.maps.Marker({
 				map: map,
@@ -316,9 +299,10 @@ Ext.define('recruitingNP.controller.Controller', {
 			bounds.extend(place.geometry.location);
 		}
 
-		map.fitBounds(bounds);
-		this.getMapView().setMapOptions({zoom: 12});
+		this.markers = markers;
 
+		map.fitBounds(bounds);
+		map.setOptions({zoom: 12});
 		google.maps.event.addListener(map, 'bounds_changed', function() {
 			var bounds = map.getBounds();
 			searchBox.setBounds(bounds);
