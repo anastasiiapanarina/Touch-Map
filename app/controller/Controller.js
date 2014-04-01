@@ -11,7 +11,6 @@ Ext.define('recruitingNP.controller.Controller', {
 			navView: 'navview',
 			logoutButton: 'button#logoutButton',
 			mapView: 'mapview',
-			candMap: 'map#addressMap',
 			mapRadius: 'numberfield#mapRadius',
 			centerMapPoint: 'selectfield#centerMapPoint'
 		},
@@ -42,10 +41,6 @@ Ext.define('recruitingNP.controller.Controller', {
 
 			'mapview': {
 				maprender: 'renderMap'
-			},
-
-			'map#addressMap': {
-				maprender: 'renderCandidatesPlaces',
 			},
 
 			'button#loginButton': {
@@ -117,32 +112,6 @@ Ext.define('recruitingNP.controller.Controller', {
 		}
 	},
 
-	doLogin: function (button) {
-		var form = button.up(),
-			values = form.getValues(),
-			name = values.name,
-			password = values.password;
-		console.log('Device platform: ' + Ext.device.Device.platform);
-		console.log(Ext.os.deviceType);
-		this.getLogoutButton().show();	
-		this.getNavView().getNavigationBar().getBackButton().show();
-		this.getNavView().push({
-			title: 'Candidates',
-			xtype: 'candidatestabpanel',
-		});
-		
-		// if (name === "nata" && password === "nnnn") {
-
-		// } else {
-		// 	Ext.Msg.alert('', 'Please, enter correct name and password!')
-		// }
-	},
-
-	doLogout: function (button) {
-		button.hide();
-		this.getNavView().reset();
-	},
-
 	showCandidateDetails: function (view, index, noda, record) {
 		this.getNavView().getNavigationBar().getBackButton().disable();
 		this.getLogoutButton().disable();
@@ -152,6 +121,25 @@ Ext.define('recruitingNP.controller.Controller', {
 			})
 		);
 	},
+
+	doLogin: function (button) {
+		var form = button.up(),
+			values = form.getValues(),
+			name = values.name,
+			password = values.password;
+		this.getLogoutButton().show();	
+		this.getNavView().getNavigationBar().getBackButton().show();
+		this.getNavView().push({
+			title: 'Candidates',
+			xtype: 'candidatestabpanel',
+		});
+	},
+
+	doLogout: function (button) {
+		button.hide();
+		this.getNavView().reset();
+	},
+
 
 	makeOffer: function (button) {
 		var record = button.up().getRecord();
@@ -180,12 +168,6 @@ Ext.define('recruitingNP.controller.Controller', {
 		} else {
 			mapView.getRecord() ? this.renderSelectedPlace(mapView) : this.renderSearchedPlace(mapView);
 		}
-	},
-	
-	showNewCandidatesMarkers: function () {
-		this.clearMarkers();
-		this.clearCircle();
-		this.renderCandidatesPlaces();
 	},
 
 	renderCandidatesPlaces: function () {
@@ -219,7 +201,7 @@ Ext.define('recruitingNP.controller.Controller', {
 
 		for (var i = 0, place; place = candidates[i]; i++) {
 			var latLng = new google.maps.LatLng(place.get('addresslat'), place.get('addresslong'));
-			var dist = google.maps.geometry.spherical.computeDistanceBetween (centerPoint, latLng);
+			var dist = google.maps.geometry.spherical.computeDistanceBetween(centerPoint, latLng);
 			if (dist/1000 < radius) {
 				var marker = new google.maps.Marker({
 					map: map,
@@ -232,24 +214,10 @@ Ext.define('recruitingNP.controller.Controller', {
 			}
 		}
 
-
 		this.markers = markers;
 		radius ? map.fitBounds(this.circle.getBounds()) : mapView.setMapCenter(centerPoint);
 	},
 
-	clearMarkers: function () {
-		if(this.markers.length !== 0) {
-			for (var i = 0, marker; marker = this.markers[i]; i++) {
-				marker.setMap(null);
-			}
-			this.markers = [];
-		}
-	},
-
-	clearCircle: function () {
-		this.circle.setMap(null);
-		this.circle = null;
-	},
 
 	renderSelectedPlace: function (mapView) {
 		var latitude = mapView.getRecord().get('latitude'),
@@ -282,7 +250,6 @@ Ext.define('recruitingNP.controller.Controller', {
 		}
 	},
 
-
 	showPlace: function (map) {
 		var markers = [],
 			searchBox = this.searchBox,
@@ -300,13 +267,33 @@ Ext.define('recruitingNP.controller.Controller', {
 		}
 
 		this.markers = markers;
-
 		map.fitBounds(bounds);
-		map.setOptions({zoom: 12});
+		if (markers.length === 1) {
+			map.setOptions({zoom: 12});
+		}
 		google.maps.event.addListener(map, 'bounds_changed', function() {
 			var bounds = map.getBounds();
 			searchBox.setBounds(bounds);
 		});
-	}
+	},
 
+	showNewCandidatesMarkers: function () {
+		this.clearMarkers();
+		this.clearCircle();
+		this.renderCandidatesPlaces();
+	},
+
+	clearMarkers: function () {
+		if(this.markers.length !== 0) {
+			for (var i = 0, marker; marker = this.markers[i]; i++) {
+				marker.setMap(null);
+			}
+			this.markers = [];
+		}
+	},
+
+	clearCircle: function () {
+		this.circle.setMap(null);
+		this.circle = null;
+	}
 });

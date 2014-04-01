@@ -38,8 +38,7 @@ Ext.define('recruitingNP.view.candidates.CandidatesTabPanel',{
 							{
 								xtype: 'numberfield',
 								itemId: 'mapRadius',
-								label: 'Radius:',
-								//value: 100
+								label: 'Radius:'
 							}
 						]
 					}
